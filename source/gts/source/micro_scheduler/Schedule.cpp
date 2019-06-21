@@ -181,7 +181,10 @@ void Schedule::wait(Task* pWaitingTask, Task* pStartTask, Backoff& backoff)
                     GTS_INSTRUMENTER_MARKER(analysis::Tag::INTERNAL, "IMPLICIT WAIT START", pTask, 0);
 
                     // If not, implicitly wait.
-                    wait(pTask, nullptr, backoff);
+                    do
+                    {
+                        wait(pTask, nullptr, backoff);
+                    } while (pTask->refCount() > 1)
 
                     GTS_INSTRUMENTER_MARKER(analysis::Tag::INTERNAL, "IMPLICIT WAIT END", pTask, 0);
                 }
