@@ -212,6 +212,8 @@ public: // MUTATORS:
      */
     void spawnTaskAndWait(Task* pTask, uint32_t priority = 0);
 
+    void wait(Task* pWaitingTask);
+
     /**
      * Queues the specified 'pTask' to be executed by the scheduler. Queued
      * tasks are executed in FIFO order, and may be more suitable for algorithms

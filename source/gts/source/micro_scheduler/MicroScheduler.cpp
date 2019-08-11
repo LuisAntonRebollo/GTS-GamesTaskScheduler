@@ -166,6 +166,12 @@ void MicroScheduler::spawnTaskAndWait(Task* pTask, uint32_t priority)
 }
 
 //------------------------------------------------------------------------------
+void MicroScheduler::wait(Task* pWaitingTask)
+{
+    _wait(pWaitingTask, nullptr, m_pWorkerPool->thisWorkerIndex());
+}
+
+//------------------------------------------------------------------------------
 void MicroScheduler::queueTask(Task* pTask)
 {
     GTS_INSTRUMENTER_SCOPED(analysis::Tag::INTERNAL, "QUEUE TASK", pTask, 0);
