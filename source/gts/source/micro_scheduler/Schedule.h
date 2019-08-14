@@ -76,7 +76,7 @@ public: // MUTATORS:
 
 private: // SCHEDULING:
 
-    void _handleContinuation(Task* pTask, Task*& pNextTask);
+    void _handleContinuation(void* pTask, Task *pParent, Task*& pNextTask);
     //void _executeTask(Task* pTask);
     Task* _getLocalTask(uint32_t workerIdx);
     GTS_NO_INLINE Task* _getLocalBoostedTask(uint32_t workerIdx);
