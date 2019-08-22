@@ -113,6 +113,9 @@ public:
             // and if we are beyond the suspend threshold,
             if (++m_yieldCount > SUSPEND_THREASHOLD)
             {
+                // We exceeded the cycle limit for yield, reduce it
+                m_yieldThreshold /= 2;
+
                 // return true to indicate that a suspend is needed.
                 return true;
             }
