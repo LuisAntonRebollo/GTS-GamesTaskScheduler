@@ -111,12 +111,6 @@ public: // MUTATORS:
     GTS_INLINE void recyleAsChildOf(Task* pParent);
 
     /**
-     * Waits for all this Task's children to complete before continuing. While
-     * waiting, this task will execute other available work.
-     */
-    void waitForChildren(TaskContext const& ctx);
-
-    /**
      * Manually destroy this task that are never executed. Useful for dummy tasks.
      */
     void destroy(TaskContext const& ctx);
@@ -205,6 +199,7 @@ private: // DATA:
 
     friend class MicroScheduler;
     friend class Schedule;
+    friend class MicroScheduler_Workload;
 
     using DataDestructor = void(*)(void* pData);
 
@@ -217,6 +212,12 @@ private: // DATA:
         GTS_UNREFERENCED_PARAM(pData);
         reinterpret_cast<T*>(pData)->~T();
     }
+
+    /**
+     * Waits for all this Task's children to complete before continuing. While
+     * waiting, this task will execute other available work.
+     */
+    void waitForChildren(TaskContext const& ctx);
 
     enum States
     {
