@@ -190,13 +190,15 @@ void Schedule::wait(Task* pWaitingTask, Task* pStartTask, Backoff& backoff)
                 }
 
                 {
-                    gts::Task *pParentTask = pTask->m_pParent;
+                    // call destructor
+                    pTask->m_fcnDataDestructor(pTask->_dataSuffix());
+                    pTask->m_fcnDataDestructor = nullptr;
+
+                    // Check for ready continuations.
+                    _handleContinuation(pTask, pNextTask);
 
                     // Free this task.
                     m_pMyScheduler->_freeTask(workerIdx, pTask);
-
-                    // Check for ready continuations.
-                    _handleContinuation(pTask, pParentTask, pNextTask);
 
                 }
 
@@ -286,9 +288,10 @@ void Schedule::wait(Task* pWaitingTask, Task* pStartTask, Backoff& backoff)
 }
 
 //------------------------------------------------------------------------------
-void Schedule::_handleContinuation(void* pTask, Task* pParent, Task*& pNextTask)
+void Schedule::_handleContinuation(Task* pTask, Task*& pNextTask)
 {
     // If the task has a parent,
+    Task* pParent = pTask->m_pParent;
     if (pParent == nullptr)
     {
         GTS_INSTRUMENTER_MARKER(analysis::Tag::INTERNAL, "DONE NO PARENT", pTask, pParent);

@@ -247,7 +247,7 @@ void MicroScheduler::_freeTask(uint32_t workerIdx, Task* pTask)
     GTS_ANALYSIS_TIME_SCOPED(workerIdx, gts::analysis::AnalysisType::NUM_FREES);
     GTS_INSTRUMENTER_SCOPED(analysis::Tag::INTERNAL, "FREE TASK", pTask, 0);
 
-    pTask->m_fcnDataDestructor(pTask->_dataSuffix());
+    if(pTask->m_fcnDataDestructor) pTask->m_fcnDataDestructor(pTask->_dataSuffix());
     m_pTaskAllocator->free(workerIdx, pTask);
 }
 
